@@ -1,5 +1,4 @@
 <script>
-import axios from "axios";
 import { store } from "../store";
 export default {
   name: "CardsSearch",
@@ -9,43 +8,49 @@ export default {
     };
   },
   methods: {
-    getStatus() {
-      axios
-        .get(
-          this.store.apiInfo.url +
-            this.store.apiInfo.endPoint.aliveStatus +
-            this.store.apiInfo.endPoint.deadStatus +
-            this.store.apiInfo.endPoint.unknownStatus
-        )
-        .then((response) => {
-          this.store.aliveStatus = response.data;
-          console.log(response.data);
-        });
+    search() {
+      // Emetti un evento "search" con i parametri di ricerca
+      this.$emit("search", {
+        searchKey: this.store.searchKey,
+        searchStatus: this.store.searchStatus,
+      });
     },
-  },
-  created() {
-    this.getStatus();
+    reset() {
+      // Resetta i campi di ricerca
+      this.store.searchKey = "";
+      this.store.searchStatus = "";
+    },
   },
 };
 </script>
 
 <template>
   <div class="d-flex my-5">
-    <form action="" class="d-flex gap-2 justify-content-center">
+    <!-- QUI ANDREMO A RICHIMARE L EVENTO 'SEARCH', PERCHè ESSENDO UN FORM CON L EVENTO SUBMIT GESTIRà TUTTO IL CAMPO DI RICERCA -->
+    <form class="d-flex gap-2 justify-content-center" @submit.prevent="search">
       <input
+        v-model="store.searchKey"
         type="search"
         class="form-control"
         placeholder="Search..."
         aria-label="Search"
       />
-      <select v-model="status" @change="onSearch" class="form-select" aria-label="Default select example">
+      <select
+        v-model="store.searchStatus"
+        class="form-select"
+        aria-label="Default select example"
+      >
         <option selected disabled>Select status</option>
-        <option v-for="alive in store.results">{{ alive.status }}</option>
-        <option value="2">dead</option>
-        <option value="3">uknow</option>
+
+        <option value="alive">alive</option>
+        <option value="dead">dead</option>
+        <option value="unknown">unknow</option>
       </select>
-      <button type="button" class="btn btn-outline-primary">Search</button>
-      <button type="button" class="btn btn-outline-warning">Reset</button>
+      <!-- ANDREMO A CAMBIARE IL TASTO TPE DA BUTTON A SUBMIT PER RISPETTARE LA CONDIZIONE DESCRITTA SOPRA -->
+      <button type="submit" class="btn btn-outline-primary">Search</button>
+      <button type="button" @click="reset" class="btn btn-warning">
+        Reset
+      </button>
     </form>
   </div>
 </template>

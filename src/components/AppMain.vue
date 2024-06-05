@@ -18,8 +18,17 @@ export default {
   },
   methods: {
     getCharacters() {
+      const params = {};
+      if (this.store.searchStatus !== "") {
+        params.status = this.store.searchStatus;
+      }
+      if (this.store.searchKey !== "") {
+        params.name = this.store.searchKey;
+      }
       axios
-        .get(this.store.apiInfo.url + this.store.apiInfo.endPoint.charachter)
+        .get(this.store.apiInfo.url + this.store.apiInfo.endPoint.charachter, {
+          params,
+        })
         .then((response) => {
           const { results, info } = response.data;
           this.store.results = results;
@@ -44,7 +53,7 @@ export default {
       ></div>
     </div>
     <div v-else>
-      <CardsSearch />
+      <CardsSearch @search="getCharacters" />
       <CardList />
       <ResultsFound />
     </div>

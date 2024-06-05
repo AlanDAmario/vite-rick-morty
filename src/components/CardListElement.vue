@@ -8,7 +8,7 @@ export default {
 <template>
   <div class="col-2">
     <img :src="image" :alt="name" />
-    <h4 class="text-center my-2">{{ name }}</h4>
+    <h4 class="text-center my-2 text-danger bg-warning-subtle">{{ name }}</h4>
   </div>
 </template>
 
