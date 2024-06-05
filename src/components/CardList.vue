@@ -15,7 +15,6 @@ export default {
 </script>
 
 <template>
-  <div class="container">
     <div class="d-flex flex-wrap gap-2">
       <CardListElement
         v-for="(card, index) in store.results"
@@ -23,7 +22,6 @@ export default {
         :image="card.image"
       />
     </div>
-  </div>
 </template>
 
 <style lang="scss" scoped></style>
